@@ -1,4 +1,4 @@
-// Generated from C:/Users/rusty/Documents/GitHub/CSCI468-Compiler-Project/CompilerProject/src\Hello.g4 by ANTLR 4.8
+// Generated from C:/Users/rusty/Documents/GitHub/CSCI468-Compiler-Project/CompilerProject/src\LITTLESCANNER.g4 by ANTLR 4.8
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
@@ -9,14 +9,15 @@ import java.util.Iterator;
 import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
-public class HelloParser extends Parser {
+public class LITTLESCANNERParser extends Parser {
 	static { RuntimeMetaData.checkVersion("4.8", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, ID=2, WS=3;
+		KEYWORD=1, IDENTIFIER=2, INTLITERAL=3, FLOATLITERAL=4, STRINGLITERAL=5, 
+		COMMENT=6, OPERATOR=7;
 	public static final int
 		RULE_r = 0;
 	private static String[] makeRuleNames() {
@@ -28,13 +29,13 @@ public class HelloParser extends Parser {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'hello'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, "ID", "WS"
+			null, "KEYWORD", "IDENTIFIER", "INTLITERAL", "FLOATLITERAL", "STRINGLITERAL", 
+			"COMMENT", "OPERATOR"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -72,7 +73,7 @@ public class HelloParser extends Parser {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "Hello.g4"; }
+	public String getGrammarFileName() { return "LITTLESCANNER.g4"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
@@ -83,28 +84,34 @@ public class HelloParser extends Parser {
 	@Override
 	public ATN getATN() { return _ATN; }
 
-	public HelloParser(TokenStream input) {
+	public LITTLESCANNERParser(TokenStream input) {
 		super(input);
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
 	public static class RContext extends ParserRuleContext {
-		public TerminalNode ID() { return getToken(HelloParser.ID, 0); }
+		public TerminalNode IDENTIFIER() { return getToken(LITTLESCANNERParser.IDENTIFIER, 0); }
+		public TerminalNode KEYWORD() { return getToken(LITTLESCANNERParser.KEYWORD, 0); }
+		public TerminalNode INTLITERAL() { return getToken(LITTLESCANNERParser.INTLITERAL, 0); }
+		public TerminalNode FLOATLITERAL() { return getToken(LITTLESCANNERParser.FLOATLITERAL, 0); }
+		public TerminalNode STRINGLITERAL() { return getToken(LITTLESCANNERParser.STRINGLITERAL, 0); }
+		public TerminalNode COMMENT() { return getToken(LITTLESCANNERParser.COMMENT, 0); }
+		public TerminalNode OPERATOR() { return getToken(LITTLESCANNERParser.OPERATOR, 0); }
 		public RContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
 		@Override public int getRuleIndex() { return RULE_r; }
 		@Override
 		public void enterRule(ParseTreeListener listener) {
-			if ( listener instanceof HelloListener ) ((HelloListener)listener).enterR(this);
+			if ( listener instanceof LITTLESCANNERListener ) ((LITTLESCANNERListener)listener).enterR(this);
 		}
 		@Override
 		public void exitRule(ParseTreeListener listener) {
-			if ( listener instanceof HelloListener ) ((HelloListener)listener).exitR(this);
+			if ( listener instanceof LITTLESCANNERListener ) ((LITTLESCANNERListener)listener).exitR(this);
 		}
 		@Override
 		public <T> T accept(ParseTreeVisitor<? extends T> visitor) {
-			if ( visitor instanceof HelloVisitor ) return ((HelloVisitor<? extends T>)visitor).visitR(this);
+			if ( visitor instanceof LITTLESCANNERVisitor ) return ((LITTLESCANNERVisitor<? extends T>)visitor).visitR(this);
 			else return visitor.visitChildren(this);
 		}
 	}
@@ -112,13 +119,20 @@ public class HelloParser extends Parser {
 	public final RContext r() throws RecognitionException {
 		RContext _localctx = new RContext(_ctx, getState());
 		enterRule(_localctx, 0, RULE_r);
+		int _la;
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(2);
-			match(T__0);
-			setState(3);
-			match(ID);
+			_la = _input.LA(1);
+			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << KEYWORD) | (1L << IDENTIFIER) | (1L << INTLITERAL) | (1L << FLOATLITERAL) | (1L << STRINGLITERAL) | (1L << COMMENT) | (1L << OPERATOR))) != 0)) ) {
+			_errHandler.recoverInline(this);
+			}
+			else {
+				if ( _input.LA(1)==Token.EOF ) matchedEOF = true;
+				_errHandler.reportMatch(this);
+				consume();
+			}
 			}
 		}
 		catch (RecognitionException re) {
@@ -133,9 +147,8 @@ public class HelloParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\5\b\4\2\t\2\3\2\3"+
-		"\2\3\2\3\2\2\2\3\2\2\2\2\6\2\4\3\2\2\2\4\5\7\3\2\2\5\6\7\4\2\2\6\3\3\2"+
-		"\2\2\2";
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3\t\7\4\2\t\2\3\2\3"+
+		"\2\3\2\2\2\3\2\2\3\3\2\3\t\2\5\2\4\3\2\2\2\4\5\t\2\2\2\5\3\3\2\2\2\2";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
