@@ -1,9 +1,9 @@
-C:\Javalib must contain antlr-4.8-complete.jar in order to work
+To run the project enter the following command
 
-To run open terminal and run the following
->>>	./Micro.bat path/to/file
+	$ ./Micro.sh path/to/file path/to/file
 
-Once complete a filename will be requested, this file will be placed in the
-out folder 
+takes up to 4 arguments
 
-NOTE: the base location when running this script is the src folder
+outputs files at same destination as Micro.sh
+
+src files in src folder holds our grammar and driver files used to procude the CompilerProject.jar

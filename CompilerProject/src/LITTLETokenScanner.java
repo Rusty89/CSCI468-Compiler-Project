@@ -47,7 +47,7 @@ public class LITTLETokenScanner {
         Scanner in = new Scanner(System.in);
         //printwriter to put output string in a file
         System.out.print("Enter name of output file >>> ");
-        PrintWriter writer = new PrintWriter(new File("../out",in.nextLine()));
+        PrintWriter writer = new PrintWriter(in.nextLine());
         writer.print(outputString);
         writer.close();
     }
