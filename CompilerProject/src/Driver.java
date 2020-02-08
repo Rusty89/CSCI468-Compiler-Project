@@ -6,7 +6,7 @@ public class Driver {
                 tokenScan.scan(argument);
             }
         } else {
-            System.out.println("No program arguments provided. Please provide at least one argument.")
+            System.out.println("No program arguments provided. Please provide at least one argument.");
         }
     }
 }
