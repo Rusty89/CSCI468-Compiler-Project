@@ -24,7 +24,7 @@ public class LITTLETokenScanner {
         sc.useDelimiter("\\Z");
         String inputFileString = sc.next();
 
-        LITTLESCANNER  lexer = new LITTLESCANNER(CharStreams.fromString(inputFileString));
+        LITTLESCANNER lexer = new LITTLESCANNER(CharStreams.fromString(inputFileString));
         System.out.println("Beginning Scan...");
         while (true) {
             //while the lexer continues to find tokens in the input string
