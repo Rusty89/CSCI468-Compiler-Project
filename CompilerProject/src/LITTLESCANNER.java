@@ -2,6 +2,8 @@
  Authors: Rusy Clayton, William Kingsley, Nick Hager
  Purpose: Lexer for the LITTLE programming language
  Generated from C:/Users/rusty/Documents/GitHub/CSCI468-Compiler-Project/CompilerProject/src\LITTLESCANNER.g4 by ANTLR 4.8
+
+ Note: Might want to rename this file to LITTLELexer.java
  */
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
