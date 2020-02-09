@@ -1,22 +1,22 @@
+/*
+ Authors: Rusy Clayton, William Kingsley, Nick Hager
+ Purpose: Token scanner for the LITTLE programming language
+ Generated from C:/Users/rusty/Documents/GitHub/CSCI468-Compiler-Project/CompilerProject/src\LITTLESCANNER.g4 by ANTLR 4.8
+ */
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.Token;
-
 import java.io.*;
 import java.util.Scanner;
 
 public class LITTLETokenScanner {
-    public LITTLETokenScanner(){
-        //empty constructor
-    }
 
     public void scan(String fileName) throws FileNotFoundException, UnsupportedEncodingException {
         //string to hold output
-        String outputString="";
-
+        String outputString = "";
 
         //reads in whole file at once
         File file = new File(fileName);
-        if(!file.exists()){
+        if (!file.exists()) {
             System.out.println("File not found!");
             return;
         }
@@ -26,10 +26,10 @@ public class LITTLETokenScanner {
 
         LITTLESCANNER  lexer = new LITTLESCANNER(CharStreams.fromString(inputFileString));
         System.out.println("Beginning Scan...");
-        while(true) {
+        while (true) {
             //while the lexer continues to find tokens in the input string
             Token token = lexer.nextToken();
-            if(token.getType() == LITTLESCANNER.EOF) {
+            if (token.getType() == LITTLESCANNER.EOF) {
                 break;
             }
             //print to screen token type and value
@@ -37,13 +37,11 @@ public class LITTLETokenScanner {
             System.out.println("Token Type: "+tokenName);
             System.out.println("Value: " + token.getText());
             //append the output string with same
-            if(!tokenName.equals("COMMENT")){
-                outputString += "Token Type: "+tokenName+"\n"+"Value: " + token.getText()+"\n";
+            if (!tokenName.equals("COMMENT")) {
+                outputString += "Token Type: " + tokenName + "\n"+"Value: " + token.getText() + "\n";
             }
-
         }
         System.out.println("Scan Complete");
-
         Scanner in = new Scanner(System.in);
         //printwriter to put output string in a file
         System.out.print("Enter name of output file >>> ");
@@ -51,7 +49,4 @@ public class LITTLETokenScanner {
         writer.print(outputString);
         writer.close();
     }
-
-
 }
-

@@ -1,4 +1,8 @@
-// Generated from C:/Users/rusty/Documents/GitHub/CSCI468-Compiler-Project/CompilerProject/src\LITTLESCANNER.g4 by ANTLR 4.8
+/*
+ Authors: Rusy Clayton, William Kingsley, Nick Hager
+ Purpose: Lexer for the LITTLE programming language
+ Generated from C:/Users/rusty/Documents/GitHub/CSCI468-Compiler-Project/CompilerProject/src\LITTLESCANNER.g4 by ANTLR 4.8
+ */
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.Token;
@@ -13,36 +17,27 @@ public class LITTLESCANNER extends Lexer {
 	static { RuntimeMetaData.checkVersion("4.8", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
-	protected static final PredictionContextCache _sharedContextCache =
-		new PredictionContextCache();
+	protected static final PredictionContextCache _sharedContextCache = new PredictionContextCache();
 	public static final int
-		KEYWORD=1, IDENTIFIER=2, INTLITERAL=3, FLOATLITERAL=4, STRINGLITERAL=5, 
-		COMMENT=6, OPERATOR=7, WS=8;
-	public static String[] channelNames = {
-		"DEFAULT_TOKEN_CHANNEL", "HIDDEN"
-	};
-
-	public static String[] modeNames = {
-		"DEFAULT_MODE"
-	};
+			KEYWORD=1, IDENTIFIER=2, INTLITERAL=3, FLOATLITERAL=4,
+			STRINGLITERAL=5, COMMENT=6, OPERATOR=7, WS=8;
+	public static String[] channelNames = { "DEFAULT_TOKEN_CHANNEL", "HIDDEN" };
+	public static String[] modeNames = { "DEFAULT_MODE" };
 
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"KEYWORD", "IDENTIFIER", "INTLITERAL", "FLOATLITERAL", "STRINGLITERAL", 
-			"COMMENT", "OPERATOR", "WS"
+				"KEYWORD", "IDENTIFIER", "INTLITERAL", "FLOATLITERAL",
+				"STRINGLITERAL", "COMMENT", "OPERATOR", "WS"
 		};
 	}
 	public static final String[] ruleNames = makeRuleNames();
 
-	private static String[] makeLiteralNames() {
-		return new String[] {
-		};
-	}
+	private static String[] makeLiteralNames() { return new String[] {}; }
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, "KEYWORD", "IDENTIFIER", "INTLITERAL", "FLOATLITERAL", "STRINGLITERAL", 
-			"COMMENT", "OPERATOR", "WS"
+				null, "KEYWORD", "IDENTIFIER", "INTLITERAL", "FLOATLITERAL",
+				"STRINGLITERAL", "COMMENT", "OPERATOR", "WS"
 		};
 	}
 	private static final String[] _SYMBOLIC_NAMES = makeSymbolicNames();
@@ -69,16 +64,10 @@ public class LITTLESCANNER extends Lexer {
 
 	@Override
 	@Deprecated
-	public String[] getTokenNames() {
-		return tokenNames;
-	}
+	public String[] getTokenNames() { return tokenNames; }
 
 	@Override
-
-	public Vocabulary getVocabulary() {
-		return VOCABULARY;
-	}
-
+	public Vocabulary getVocabulary() { return VOCABULARY; }
 
 	public LITTLESCANNER(CharStream input) {
 		super(input);
@@ -158,8 +147,7 @@ public class LITTLESCANNER extends Lexer {
 		"\u00ac\3\2\2\2\u00ae\u00af\3\2\2\2\u00af\u00ad\3\2\2\2\u00af\u00b0\3\2"+
 		"\2\2\u00b0\u00b1\3\2\2\2\u00b1\u00b2\b\t\2\2\u00b2\22\3\2\2\2\17\2psu"+
 		"xz\u0080\u0085\u008c\u0092\u009d\u00aa\u00af\3\b\2\2";
-	public static final ATN _ATN =
-		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
+	public static final ATN _ATN = new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {
 		_decisionToDFA = new DFA[_ATN.getNumberOfDecisions()];
 		for (int i = 0; i < _ATN.getNumberOfDecisions(); i++) {

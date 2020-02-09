@@ -1,3 +1,7 @@
+/*
+  Authors: Rusty Clayton, William Kingsley, Nick Hager
+  Purpose: Main driver class for the LITTLE scanner/lexer
+ */
 public class Driver {
     public static void main(String[] args) throws Exception {
         LITTLETokenScanner tokenScan = new LITTLETokenScanner();
