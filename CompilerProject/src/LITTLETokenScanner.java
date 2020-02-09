@@ -10,9 +10,9 @@ import java.util.Scanner;
 
 public class LITTLETokenScanner {
 
-    public void scan(String fileName) throws FileNotFoundException, UnsupportedEncodingException {
+    public void scan(String fileName) throws FileNotFoundException {
         //string to hold output
-        String outputString = "";
+        StringBuilder outputString = new StringBuilder();
 
         //reads in whole file at once
         File file = new File(fileName);
@@ -38,12 +38,16 @@ public class LITTLETokenScanner {
             System.out.println("Value: " + token.getText());
             //append the output string with same
             if (!tokenName.equals("COMMENT")) {
-                outputString += "Token Type: " + tokenName + "\n"+"Value: " + token.getText() + "\n";
+                outputString
+                        .append("Token Type: ").append(tokenName)
+                        .append("\n")
+                        .append("Value: ").append(token.getText())
+                        .append("\n");
             }
         }
         System.out.println("Scan Complete");
         Scanner in = new Scanner(System.in);
-        //printwriter to put output string in a file
+        // print writer to put output string in a file
         System.out.print("Enter name of output file >>> ");
         PrintWriter writer = new PrintWriter(in.nextLine());
         writer.print(outputString);
