@@ -24,12 +24,12 @@ public class LITTLETokenScanner {
         sc.useDelimiter("\\Z");
         String inputFileString = sc.next();
 
-        LITTLESCANNER  lexer = new LITTLESCANNER(CharStreams.fromString(inputFileString));
+        LITTLELexer  lexer = new LITTLELexer(CharStreams.fromString(inputFileString));
         System.out.println("Beginning Scan...");
         while(true) {
             //while the lexer continues to find tokens in the input string
             Token token = lexer.nextToken();
-            if(token.getType() == LITTLESCANNER.EOF) {
+            if(token.getType() == LITTLELexer.EOF) {
                 break;
             }
             //print to screen token type and value
