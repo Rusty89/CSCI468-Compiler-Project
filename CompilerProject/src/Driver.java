@@ -19,6 +19,7 @@ public class Driver {
                 CommonTokenStream ts = new CommonTokenStream(lexer);
                 LITTLEParser parser = new LITTLEParser(ts);
 
+                parser.removeErrorListeners();
                 parser.program();
 
                 if(parser.getNumberOfSyntaxErrors()>0){
