@@ -1,4 +1,6 @@
 import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.tree.ParseTree;
+
 import java.io.File;
 import java.util.Scanner;
 
@@ -21,12 +23,13 @@ public class Driver {
 
                 parser.removeErrorListeners();
                 parser.program();
-
+                //System.out.println(pt.toStringTree(parser));
                 if(parser.getNumberOfSyntaxErrors()>0){
                     System.out.println("Not accepted");
                 }else{
                     System.out.println("Accepted");
                 }
+
 
 
 
