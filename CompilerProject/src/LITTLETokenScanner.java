@@ -25,7 +25,7 @@ public class LITTLETokenScanner {
         String inputFileString = sc.next();
 
         LITTLESCANNER  lexer = new LITTLESCANNER(CharStreams.fromString(inputFileString));
-        System.out.println("Beginning Scan...");
+
         while(true) {
             //while the lexer continues to find tokens in the input string
             Token token = lexer.nextToken();
@@ -34,22 +34,16 @@ public class LITTLETokenScanner {
             }
             //print to screen token type and value
             String tokenName = lexer.getVocabulary().getSymbolicName(token.getType());
-            System.out.println("Token Type: "+tokenName);
-            System.out.println("Value: " + token.getText());
+
             //append the output string with same
             if(!tokenName.equals("COMMENT")){
                 outputString += "Token Type: "+tokenName+"\n"+"Value: " + token.getText()+"\n";
             }
 
         }
-        System.out.println("Scan Complete");
 
-        Scanner in = new Scanner(System.in);
-        //printwriter to put output string in a file
-        System.out.print("Enter name of output file >>> ");
-        PrintWriter writer = new PrintWriter(in.nextLine());
-        writer.print(outputString);
-        writer.close();
+
+        System.out.println(outputString);
     }
 
 
