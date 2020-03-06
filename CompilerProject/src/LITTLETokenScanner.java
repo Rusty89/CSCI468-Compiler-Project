@@ -17,7 +17,7 @@ public class LITTLETokenScanner {
         //reads in whole file at once
         File file = new File(fileName);
         if(!file.exists()){
-            System.out.println("File not found!");
+
             return;
         }
         Scanner sc = new Scanner(file);
