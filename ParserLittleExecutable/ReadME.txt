@@ -1,0 +1,1 @@
+Run the grading script with Micro and CompilerProject.jar file on same level as the Grading script
