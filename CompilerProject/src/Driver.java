@@ -1,5 +1,6 @@
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 import java.io.File;
 import java.util.Scanner;
@@ -22,15 +23,16 @@ public class Driver {
                 LITTLEParser parser = new LITTLEParser(ts);
 
                 parser.removeErrorListeners();
-                parser.program();
+                ParseTree tree = parser.program();
                 //System.out.println(pt.toStringTree(parser));
                 if(parser.getNumberOfSyntaxErrors()>0){
                     System.out.println("Not accepted");
                 }else{
                     System.out.println("Accepted");
                 }
-
-
+                ParseTreeWalker ptwalker = new ParseTreeWalker();
+                LITTLEListenerCustom listener = new LITTLEListenerCustom();
+                ptwalker.walk(listener, tree);
 
 
             }

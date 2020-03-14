@@ -15,31 +15,39 @@ public class LITTLEBaseListener implements LITTLEListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterProgram(LITTLEParser.ProgramContext ctx) { }
+	@Override public void enterProgram(LITTLEParser.ProgramContext ctx) {
+	}
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitProgram(LITTLEParser.ProgramContext ctx) { }
+	@Override public void exitProgram(LITTLEParser.ProgramContext ctx) {
+	}
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterId(LITTLEParser.IdContext ctx) { }
+	@Override public void enterId(LITTLEParser.IdContext ctx) {
+
+	}
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitId(LITTLEParser.IdContext ctx) { }
+	@Override public void exitId(LITTLEParser.IdContext ctx) {
+
+	}
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPgm_body(LITTLEParser.Pgm_bodyContext ctx) { }
+	@Override public void enterPgm_body(LITTLEParser.Pgm_bodyContext ctx) {
+
+	}
 	/**
 	 * {@inheritDoc}
 	 *
@@ -51,13 +59,18 @@ public class LITTLEBaseListener implements LITTLEListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDecl(LITTLEParser.DeclContext ctx) { }
+	@Override public void enterDecl(LITTLEParser.DeclContext ctx) {
+
+
+	}
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitDecl(LITTLEParser.DeclContext ctx) { }
+	@Override public void exitDecl(LITTLEParser.DeclContext ctx) {
+
+	}
 	/**
 	 * {@inheritDoc}
 	 *
@@ -87,13 +100,16 @@ public class LITTLEBaseListener implements LITTLEListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVar_decl(LITTLEParser.Var_declContext ctx) { }
+	@Override public void enterVar_decl(LITTLEParser.Var_declContext ctx) {
+	}
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitVar_decl(LITTLEParser.Var_declContext ctx) { }
+	@Override public void exitVar_decl(LITTLEParser.Var_declContext ctx) {
+
+	}
 	/**
 	 * {@inheritDoc}
 	 *
