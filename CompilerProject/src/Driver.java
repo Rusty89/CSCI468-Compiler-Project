@@ -3,6 +3,7 @@ import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Driver {
@@ -11,10 +12,7 @@ public class Driver {
             for (String argument : args) {
                 //reads in whole file at once
                 File file = new File(argument);
-                if(!file.exists()){
-                    System.out.println("File not found!");
-                    return;
-                }
+
                 Scanner sc = new Scanner(file);
                 sc.useDelimiter("\\Z");
                 String inputFileString = sc.next();
@@ -24,16 +22,30 @@ public class Driver {
 
                 parser.removeErrorListeners();
                 ParseTree tree = parser.program();
-                //System.out.println(pt.toStringTree(parser));
                 if(parser.getNumberOfSyntaxErrors()>0){
-                    System.out.println("Not accepted");
+                    //System.out.println("Not accepted");
                 }else{
-                    System.out.println("Accepted");
+                    //System.out.println("Accepted");
                 }
                 ParseTreeWalker ptwalker = new ParseTreeWalker();
                 LITTLEListenerCustom listener = new LITTLEListenerCustom();
                 ptwalker.walk(listener, tree);
 
+                if(!listener.nameShared){
+                    while(!listener.dummyTransferScopeStack.empty()){
+                        ArrayList<ArrayList<String>> output = listener.dummyTransferScopeStack.pop();
+                        for (ArrayList<String> scopeLayer: output) {
+                            for (String item: scopeLayer) {
+                                System.out.print(item);
+                                System.out.print(" ");
+                            }
+                            System.out.println("");
+
+                        }
+                        System.out.println("");
+                    }
+
+                }
 
             }
         } else {
