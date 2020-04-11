@@ -1,7 +1,9 @@
-cp -r src temp                                   #copy's src into a temp folder so we don't make a mess
-java org.antlr.v4.Tool -o temp src/LITTLE.g4     #generates all ANTLR files
-javac temp/*.java                                #compiles all files in temp folder
-cd temp                                          #moves into compiled temp folder
-java Driver ../$1                                #runs an input argument from the main level
-cd ..                                            #moves back to main level
-rm -r temp                                       #removes temporarily generated files
+./InstallAntlr 
+cp -r src temp                                   #copy's src into a temp folder so we don't make a mess 
+cd temp 
+java -cp ../antlrInstallation/antlr-4.8-complete.jar org.antlr.v4.Tool LITTLE.g4     #generates all ANTLR files 
+javac -cp ../antlrInstallation/antlr-4.8-complete.jar *.java #compiles all the .java files  
+java -cp .:../antlrInstallation/antlr-4.8-complete.jar Driver ../$1    #runs an input argument from the main level 
+cd ..                                            #moves back to main level 
+rm -r temp                                       #removes temporarily generated files 
+rm -r antlrInstallation  #asdf 
