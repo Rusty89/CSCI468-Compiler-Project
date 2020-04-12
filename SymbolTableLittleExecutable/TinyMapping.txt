@@ -1,0 +1,130 @@
+3 Address Code (3AC)-> Tiny Mapping
+-----------------------------------------------------------------------------------
+FORMAT EXAMPLE:
+
+* 3AC (explanation)
+*	generic tinycode 
+*	...
+*	...
+*	generic tinycode
+*
+*	example: *some example
+*		specific tinycode	// *comments
+*		...
+*		...
+*		specific tinycode
+*
+*	*note: *any additional nodes
+----------------------------------------------------------------------------------
+  
+ADDI OP1 OP2 RESULT (Integer add; RESULT = OP1 + OP2)
+		move OP1 R1
+		move OP2 R2
+		addi R1 R3
+		addi R2 R3
+		move R3 RESULT
+		
+		example: C = A + B -> ADDI A B C
+			move A R1       // A value to Reg1
+			move B R2		// B value to Reg2
+			addi R1 R3		// Reg3 = Reg3 + Reg1
+			addi R2 R3		// Reg3 = Reg3 + Reg2
+			move R3 C		// Reg3 value to C
+	
+	*note: for ADDF (floating point numbers) use addr
+----------------------------------------------------------------------------------
+			
+SUBI OP1 OP2 RESULT (Integer sub; RESULT = OP1 - OP2)
+		move OP1 R1
+		move OP2 R2
+		move R1 R3
+		subi R2 R3
+		move R3 RESULT
+		
+		example: C = A - B -> SUBI A B C
+			move A R1       // A value to Reg1
+			move B R2		// B value to Reg2
+			move R1 R3		// Reg1 value to Reg3 to avoid changing Reg1, i.e. Reg1 =/= Reg3 (needed?)
+			addi R2 R3		// Reg3 = Reg3 - Reg2
+			move R3 C		// Reg3 value to C
+	*note: for SUBF (floating point numbers) use subr
+----------------------------------------------------------------------------------
+			
+MULTI OP1 OP2 RESULT (Integer mul; RESULT = OP1 * OP2)
+		move OP1 R1
+		move OP2 R2
+		move R1 R3
+		muli R2 R3
+		move R3 RESULT
+		
+		example: C = A * B -> MULTI A B C
+			move A R1       // A value to Reg1
+			move B R2		// B value to Reg2
+			move R1 R3		// Reg1 value to Reg3 to avoid changing Reg1, i.e. Reg1 =/= Reg3 (needed?)
+			muli R2 R3		// Reg3 = Reg3 * Reg2
+			move R3 C		// Reg3 value to C
+			
+	*note: for MULTF (floating point numbers) use mulr
+----------------------------------------------------------------------------------
+			
+DIVI OP1 OP2 RESULT (Integer div; RESULT = OP1 / OP2)
+		move OP1 R1
+		move OP2 R2
+		move R1 R3
+		divi R2 R3
+		move R3 RESULT
+		
+		example: C = A / B -> MULTI A B C
+			move A R1       // A value to Reg1
+			move B R2		// B value to Reg2
+			move R1 R3		// Reg1 value to Reg3 to avoid changing Reg1, i.e. Reg1 =/= Reg3 (needed?)
+			divi R2 R3		// Reg3 = Reg3 / Reg2
+			move R3 C		// Reg3 value to C
+			
+	*note: for DIVF (floating point numbers) use divr
+----------------------------------------------------------------------------------
+	
+STOREI OP1 RESULT (Integer store; store OP1 in RESULT)
+		move OP1 R1
+		move R1 RESULT
+		
+		example: B = A
+			move A R1		// A value to Reg1
+			move R1 B		// Reg1 value to B
+			
+	*note: same mapping for STOREF
+----------------------------------------------------------------------------------
+	
+READI RESULT (Read integer from console; store in RESULT)
+		sys readi RESULT
+		
+		example: user_input = input("Write a number: "); // this is example Java Code
+			//...(See WRITEI/F/S)
+			sys readi user_input	// read input from console
+	
+	*note: for READF (floating point numbers) use readr
+----------------------------------------------------------------------------------	
+
+WRITEI OP1 (Write integer OP1 to console)
+		sys writei OP1
+		
+		example: int num = 3;
+				 print(num);		// this is example Java Code
+				 
+			var num
+			move 3 num
+			sys writei num	// output to console
+	
+	*note: for WRITEF (floating point numbers) use writer
+----------------------------------------------------------------------------------
+	
+WRITES OP1 (Write string OP1 to console)
+		sys writes OP1	//OP1 must be a sid (string id, see example)
+		
+		example: String greeting = "Hello";	// this is example Java Code
+				 print(greeting);
+				 
+			str greeting "Hello"	//declaring as sid
+			sys writes greeting
+		
+		
