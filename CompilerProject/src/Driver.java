@@ -31,6 +31,16 @@ public class Driver {
                 LITTLEListenerCustom listener = new LITTLEListenerCustom();
                 ptwalker.walk(listener, tree);
 
+                visitAST IR_code_generation = new visitAST(listener.symbolTable);
+                //at this point the AST is completed and ready to be used to make code
+                //do post order traversal
+                IR_code_generation.post_order_traversal(listener.AST);
+                //print code
+                for (String line:IR_code_generation.code) {
+                    System.out.println(line);
+                }
+
+
                 if(!listener.nameShared){
                     while(!listener.dummyTransferScopeStack.empty()){
                         ArrayList<ArrayList<String>> output = listener.dummyTransferScopeStack.pop();
