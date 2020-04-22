@@ -1,5 +1,6 @@
 
 
+import javax.swing.plaf.basic.BasicInternalFrameTitlePane;
 import java.util.ArrayList;
 
 public class visitAST {
@@ -158,7 +159,7 @@ public class visitAST {
         temp_counter++;
         root.type_check = root.children.get(0).type_check;
 
-        if(root.type_check.equals("int")){
+        if(root.type_check.equals("INT")){
             code.add("ADDI "+ root.children.get(1).temp_var + " "+root.children.get(0).temp_var +" " +root.temp_var);
         }else{
             code.add("ADDF "+ root.children.get(1).temp_var + " "+root.children.get(0).temp_var +" " +root.temp_var);
@@ -170,7 +171,7 @@ public class visitAST {
         temp_counter++;
         root.type_check = root.children.get(0).type_check;
 
-        if(root.type_check.equals("int")){
+        if(root.type_check.equals("INT")){
             code.add("SUBI "+ root.children.get(1).temp_var + " "+root.children.get(0).temp_var +" " +root.temp_var);
         }else{
             code.add("SUBF "+ root.children.get(1).temp_var + " "+root.children.get(0).temp_var +" " +root.temp_var);
@@ -184,7 +185,7 @@ public class visitAST {
         temp_counter++;
         root.type_check = root.children.get(0).type_check;
 
-        if(root.type_check.equals("int")){
+        if(root.type_check.equals("INT")){
             code.add("MULI "+ root.children.get(1).temp_var + " "+root.children.get(0).temp_var +" " +root.temp_var);
         }else{
             code.add("MULF "+ root.children.get(1).temp_var + " "+root.children.get(0).temp_var +" " +root.temp_var);
@@ -197,7 +198,7 @@ public class visitAST {
         temp_counter++;
         root.type_check = root.children.get(0).type_check;
 
-        if(root.type_check.equals("int")){
+        if(root.type_check.equals("INT")){
             code.add("DIVI "+ root.children.get(1).temp_var + " "+root.children.get(0).temp_var +" " +root.temp_var);
         }else{
             code.add("DIVF "+ root.children.get(1).temp_var + " "+root.children.get(0).temp_var +" " +root.temp_var);
