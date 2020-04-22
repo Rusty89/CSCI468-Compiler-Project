@@ -7,6 +7,7 @@ public class ASTNode {
     String data;
     String symbol_table_level;
     String temp_var;
+    String type_check;
 
 
     public ASTNode(){

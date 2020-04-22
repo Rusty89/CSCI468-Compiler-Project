@@ -136,42 +136,73 @@ public class visitAST {
     }
     public void id(ASTNode root){
         root.temp_var = root.data;
+        String type = find_variable_type(root.data, root.symbol_table_level);
+        root.type_check = type;
     }
     public void intLit(ASTNode root){
-        root.temp_var = "T"+temp_counter;
+        root.temp_var = "$T"+temp_counter;
         temp_counter++;
+        root.type_check = "INT";
         code.add("STOREI "+ root.data + " "+root.temp_var);
 
     }
     public void floatLit(ASTNode root){
-        root.temp_var = "T"+temp_counter;
+        root.temp_var = "$T"+temp_counter;
         temp_counter++;
+        root.type_check ="FLOAT";
         code.add("STOREF "+ root.data + " "+root.temp_var);
 
     }
     public void addop(ASTNode root){
-        root.temp_var = "T"+temp_counter;
+        root.temp_var = "$T"+temp_counter;
         temp_counter++;
+        root.type_check = root.children.get(0).type_check;
 
-        code.add("ADDI "+ root.children.get(1).temp_var + " "+root.children.get(0).temp_var +" " +root.temp_var);
+        if(root.type_check.equals("int")){
+            code.add("ADDI "+ root.children.get(1).temp_var + " "+root.children.get(0).temp_var +" " +root.temp_var);
+        }else{
+            code.add("ADDF "+ root.children.get(1).temp_var + " "+root.children.get(0).temp_var +" " +root.temp_var);
+        }
+
     }
     public void subop(ASTNode root){
-        root.temp_var = "T"+temp_counter;
+        root.temp_var = "$T"+temp_counter;
         temp_counter++;
+        root.type_check = root.children.get(0).type_check;
 
-        code.add("SUBI "+ root.children.get(1).temp_var + " "+root.children.get(0).temp_var +" " +root.temp_var);
+        if(root.type_check.equals("int")){
+            code.add("SUBI "+ root.children.get(1).temp_var + " "+root.children.get(0).temp_var +" " +root.temp_var);
+        }else{
+            code.add("SUBF "+ root.children.get(1).temp_var + " "+root.children.get(0).temp_var +" " +root.temp_var);
+
+        }
+
+
     }
     public void mulop(ASTNode root){
-        root.temp_var = "T"+temp_counter;
+        root.temp_var = "$T"+temp_counter;
         temp_counter++;
+        root.type_check = root.children.get(0).type_check;
 
-        code.add("MULI "+ root.children.get(1).temp_var + " "+root.children.get(0).temp_var +" " +root.temp_var);
+        if(root.type_check.equals("int")){
+            code.add("MULI "+ root.children.get(1).temp_var + " "+root.children.get(0).temp_var +" " +root.temp_var);
+        }else{
+            code.add("MULF "+ root.children.get(1).temp_var + " "+root.children.get(0).temp_var +" " +root.temp_var);
+
+        }
+
     }
     public void divop(ASTNode root){
-        root.temp_var = "T"+temp_counter;
+        root.temp_var = "$T"+temp_counter;
         temp_counter++;
+        root.type_check = root.children.get(0).type_check;
 
-        code.add("DIVI "+ root.children.get(1).temp_var + " "+root.children.get(0).temp_var +" " +root.temp_var);
+        if(root.type_check.equals("int")){
+            code.add("DIVI "+ root.children.get(1).temp_var + " "+root.children.get(0).temp_var +" " +root.temp_var);
+        }else{
+            code.add("DIVF "+ root.children.get(1).temp_var + " "+root.children.get(0).temp_var +" " +root.temp_var);
+        }
+
     }
 
 
