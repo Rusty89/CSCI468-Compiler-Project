@@ -235,46 +235,46 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
     @Override public void exitExpr(LITTLEParser.ExprContext ctx) {
         //removing placeholder nodes and organizing the expression nodes
 
-        if(AST.children.size()>1){
-            ASTNode firstChild = AST.children.get(0);
-            ASTNode secondChild = AST.children.get(1);
-            ASTNode temp = AST;
-            AST = AST.parent;
-            AST.children.remove(temp);
-            AST.children.add(firstChild);
-            firstChild.parent = AST;
-            firstChild.children.add(secondChild);
-            secondChild.parent = firstChild;
-        }else{
-            ASTNode firstChild = AST.children.get(0);
-            ASTNode temp = AST;
-            AST = AST.parent;
-            AST.children.remove(temp);
-            AST.children.add(firstChild);
-        }
 
+
+        ASTNode final_destination = AST;
+
+
+
+        while(AST.children.size()>0){
+            AST.operation = AST.children.get(0).operation;
+            AST.data = AST.children.get(0).data;
+            AST=AST.children.get(0);
+        }
+        AST.parent.children.remove(AST);
+
+
+
+
+        AST = final_destination.parent;
 
 
     }
 
     @Override public void exitFactor(LITTLEParser.FactorContext ctx) {
-        if(AST.children.size()>1){
-            ASTNode firstChild = AST.children.get(0);
-            ASTNode secondChild = AST.children.get(1);
-            ASTNode temp = AST;
-            AST = AST.parent;
-            AST.children.remove(temp);
-            AST.children.add(firstChild);
-            firstChild.parent = AST;
-            firstChild.children.add(secondChild);
-            secondChild.parent = firstChild;
-        }else{
-            ASTNode firstChild = AST.children.get(0);
-            ASTNode temp = AST;
-            AST = AST.parent;
-            AST.children.remove(temp);
-            AST.children.add(firstChild);
+
+
+        ASTNode final_destination = AST;
+
+
+
+        while(AST.children.size()>0){
+            AST.operation = AST.children.get(0).operation;
+            AST.data = AST.children.get(0).data;
+            AST=AST.children.get(0);
         }
+        AST.parent.children.remove(AST);
+
+
+
+
+        AST = final_destination.parent;
+
     }
 
     @Override public void enterExpr_prefix(LITTLEParser.Expr_prefixContext ctx) {
