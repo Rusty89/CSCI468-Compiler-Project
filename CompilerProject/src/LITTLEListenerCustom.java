@@ -237,21 +237,27 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
 
 
 
-        ASTNode final_destination = AST;
+        ASTNode final_destination = AST.parent;
 
 
 
-        while(AST.children.size()>0){
+        while(AST.children.size()==2 ){
             AST.operation = AST.children.get(0).operation;
             AST.data = AST.children.get(0).data;
             AST=AST.children.get(0);
         }
-        AST.parent.children.remove(AST);
+
+        if(AST.children.size()==1){
+            AST.parent.children.add( AST.children.get(0));
+            AST.children.get(0).parent = AST.parent;
+
+            AST.parent.children.remove(AST);
+            AST.parent = null;
+        }
 
 
 
-
-        AST = final_destination.parent;
+        AST = final_destination;
 
 
     }
@@ -259,21 +265,31 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
     @Override public void exitFactor(LITTLEParser.FactorContext ctx) {
 
 
-        ASTNode final_destination = AST;
+        ASTNode final_destination = AST.parent;
 
 
 
-        while(AST.children.size()>0){
+        while(AST.children.size()==2 ){
             AST.operation = AST.children.get(0).operation;
             AST.data = AST.children.get(0).data;
             AST=AST.children.get(0);
         }
-        AST.parent.children.remove(AST);
+
+        if(AST.children.size()==1){
+
+            AST.parent.children.add( AST.children.get(0));
+            AST.children.get(0).parent = AST.parent;
+
+            AST.parent.children.remove(AST);
+            AST.parent = null;
+
+
+        }
 
 
 
+        AST = final_destination;
 
-        AST = final_destination.parent;
 
     }
 
