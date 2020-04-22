@@ -26,7 +26,8 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
         dummyTransferScopeStack = new Stack<>();
         //first node of the AST is the root, parent is itself.
         AST = new ASTNode();
-        AST.visited = true;
+
+
     }
     @Override public void enterPgm_body(LITTLEParser.Pgm_bodyContext ctx) {
         //make global context symbol table
@@ -176,7 +177,7 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
             checkForDuplicateName(name);
             scopeStack.peek().add(currentSymbol);
             dummyScopeStack.peek().add(currentSymbol);
-            //System.out.println("name "+name+" type " +type );
+
 
         }
     }
@@ -192,7 +193,7 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
         currentSymbol.add(ctx.str().getText());
         checkForDuplicateName(ctx.id().getText());
         dummyScopeStack.peek().add(currentSymbol);
-        //System.out.println("name "+ ctx.id().getText() + "type STRING "+ "value "+ctx.str().getText());
+
     }
 
     @Override public void enterParam_decl(LITTLEParser.Param_declContext ctx) {
@@ -205,10 +206,76 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
 
         checkForDuplicateName(ctx.id().getText());
         dummyScopeStack.peek().add(currentSymbol);
-        //System.out.println("name "+ ctx.id().getText() + "type STRING "+ "value "+ctx.str().getText());
+
 
     }
 
+    @Override public void enterExpr(LITTLEParser.ExprContext ctx) {
+        //create placeholder node
+        ASTNode expressionNode = new ASTNode();
+        expressionNode.parent = AST;
+        AST.children.add(expressionNode);
+        expressionNode.operation = "expr";
+        AST = expressionNode;
+    }
+
+
+
+    @Override public void enterFactor(LITTLEParser.FactorContext ctx) {
+        //create placeholder node
+        ASTNode factorNode = new ASTNode();
+        factorNode.parent = AST;
+        AST.children.add(factorNode);
+        factorNode.operation = "fact";
+        AST = factorNode;
+    }
+
+
+
+    @Override public void exitExpr(LITTLEParser.ExprContext ctx) {
+        //removing placeholder nodes and organizing the expression nodes
+
+        if(AST.children.size()>1){
+            ASTNode firstChild = AST.children.get(0);
+            ASTNode secondChild = AST.children.get(1);
+            ASTNode temp = AST;
+            AST = AST.parent;
+            AST.children.remove(temp);
+            AST.children.add(firstChild);
+            firstChild.parent = AST;
+            firstChild.children.add(secondChild);
+            secondChild.parent = firstChild;
+        }else{
+            ASTNode firstChild = AST.children.get(0);
+            ASTNode temp = AST;
+            AST = AST.parent;
+            AST.children.remove(temp);
+            AST.children.add(firstChild);
+        }
+
+
+
+    }
+
+    @Override public void exitFactor(LITTLEParser.FactorContext ctx) {
+        if(AST.children.size()>1){
+            ASTNode firstChild = AST.children.get(0);
+            ASTNode secondChild = AST.children.get(1);
+            ASTNode temp = AST;
+            AST = AST.parent;
+            AST.children.remove(temp);
+            AST.children.add(firstChild);
+            firstChild.parent = AST;
+            firstChild.children.add(secondChild);
+            secondChild.parent = firstChild;
+        }else{
+            ASTNode firstChild = AST.children.get(0);
+            ASTNode temp = AST;
+            AST = AST.parent;
+            AST.children.remove(temp);
+            AST.children.add(firstChild);
+        }
+    }
 
     @Override public void enterExpr_prefix(LITTLEParser.Expr_prefixContext ctx) {
         if(ctx.getChildCount()==3){
@@ -220,7 +287,7 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
                 AST.children.add(addop);
                 addop.operation = "+";
                 AST = addop;
-                System.out.println(ctx.getChild(2).getChild(0).getText());
+
             }else if(ctx.getChild(2).getChild(0).getText().equals("-")){
                 //create an subop node
                 ASTNode subop = new ASTNode();
@@ -228,7 +295,7 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
                 AST.children.add(subop);
                 subop.operation = "-";
                 AST = subop;
-                System.out.println(ctx.getChild(2).getChild(0).getText());
+
             }
 
         }
@@ -236,10 +303,11 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
     }
 
     @Override public void exitExpr_prefix(LITTLEParser.Expr_prefixContext ctx) {
+
         if(ctx.getChildCount()==3){
+
             AST = AST.parent;
         }
-
     }
 
 
@@ -254,7 +322,7 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
                 AST.children.add(mulop);
                 mulop.operation = "*";
                 AST = mulop;
-                System.out.println(ctx.getChild(2).getChild(0).getText());
+
             }else if(ctx.getChild(2).getChild(0).getText().equals("/")){
                 //create an divop node
                 ASTNode divop = new ASTNode();
@@ -262,7 +330,7 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
                 AST.children.add(divop);
                 divop.operation = "/";
                 AST = divop;
-                System.out.println(ctx.getChild(2).getChild(0).getText());
+
             }
 
         }
@@ -271,8 +339,10 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
     @Override public void exitFactor_prefix(LITTLEParser.Factor_prefixContext ctx) {
         //move back to parent if we were in a non empty factor prefix
         if(ctx.getChildCount()==3){
+
             AST = AST.parent;
         }
+
     }
 
     @Override public void enterPrimary(LITTLEParser.PrimaryContext ctx){
@@ -280,10 +350,9 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
             //create a primary node
             String primaryValue = ctx.getText();
             String type = "id";
-            //determine what the primary is
 
 
-
+            //determines what type the primary entry is
             try {
                 Float.parseFloat(primaryValue);
                 type = "float";
@@ -297,11 +366,10 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
             catch(Exception e) {
 
             }
-
+            //if not a float or an int, it's an id
 
             if(type.equals("id")){
-                System.out.println(primaryValue);
-                System.out.println(type);
+
                 //create idNode
                 ASTNode idNode = new ASTNode();
                 idNode.parent = AST;
@@ -310,8 +378,7 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
                 idNode.data = primaryValue;
                 AST = idNode;
             }else if (type.equals("integer")){
-                System.out.println(primaryValue);
-                System.out.println(type);
+
                 //create integer literal node
                 ASTNode intNode = new ASTNode();
                 intNode.parent = AST;
@@ -320,8 +387,7 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
                 intNode.data = primaryValue;
                 AST = intNode;
             }else if (type.equals("float")){
-                System.out.println(primaryValue);
-                System.out.println(type);
+
                 //create float literal node
                 ASTNode floatNode = new ASTNode();
                 floatNode.parent = AST;
@@ -346,7 +412,6 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
     @Override public void enterAssign_expr(LITTLEParser.Assign_exprContext ctx) {
         if(ctx.getChildCount()==3){
 
-
             ASTNode assignNode = new ASTNode();
             assignNode.parent = AST;
             AST.children.add(assignNode);
@@ -363,9 +428,9 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
     }
 
     @Override public void exitAssign_expr(LITTLEParser.Assign_exprContext ctx) {
-        if(ctx.getChildCount()==3){
-            AST = AST.parent;
-        }
+
+        AST = AST.parent;
+
     }
 
 
@@ -376,7 +441,7 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
         readNode.operation = "read";
         readNode.data = ctx.getChild(2).getText();
         AST = readNode;
-        System.out.println(ctx.getChild(2).getText());
+
     }
     @Override public void exitRead_stmt(LITTLEParser.Read_stmtContext ctx) {
         AST = AST.parent;
@@ -386,10 +451,10 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
         ASTNode writeNode = new ASTNode();
         writeNode.parent = AST;
         AST.children.add(writeNode);
-        writeNode.operation = "read";
+        writeNode.operation = "write";
         writeNode.data = ctx.getChild(2).getText();
         AST = writeNode;
-        System.out.println(ctx.getChild(2).getText());
+
     }
     @Override public void exitWrite_stmt(LITTLEParser.Write_stmtContext ctx) {
         AST = AST.parent;
