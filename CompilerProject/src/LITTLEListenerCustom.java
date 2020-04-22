@@ -17,12 +17,16 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
     public Stack<ArrayList<ArrayList<String>>> dummyTransferScopeStack;
     public ArrayList<ArrayList<String>> dummyCurrentSymbolSet;
 
+    public ASTNode AST;
 
     public LITTLEListenerCustom() {
         scopeStack = new Stack<>();
         transferStack = new Stack<>();
         dummyScopeStack = new Stack<>();
         dummyTransferScopeStack = new Stack<>();
+        //first node of the AST is the root, parent is itself.
+        AST = new ASTNode();
+        AST.visited = true;
     }
     @Override public void enterPgm_body(LITTLEParser.Pgm_bodyContext ctx) {
         //make global context symbol table
@@ -54,6 +58,18 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
         dummyCurrentSymbolSet.get(0).add("Symbol table "+ctx.id().getText());
         dummyScopeStack.push(dummyCurrentSymbolSet);
 
+        //make ast node for function_decl
+        ASTNode funcNode = new ASTNode();
+        //make its parent the current node
+        funcNode.parent = AST;
+        //make this new node a child of the parent
+        AST.children.add(funcNode);
+        //write what kind of thing this node does
+        funcNode.operation = "function";
+        //grabs name of function to make label with
+        funcNode.data = ctx.getChild(0).getText();
+        //update current node to the new one
+        AST = funcNode;
     }
 
 
@@ -123,6 +139,9 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
     }
     @Override public void exitFunc_decl(LITTLEParser.Func_declContext ctx) {
         addToSymbolTable();
+
+        //back out of this ast node
+        AST = AST.parent;
     }
     @Override public void exitWhile_stmt(LITTLEParser.While_stmtContext ctx) {
         addToSymbolTable();
@@ -189,6 +208,195 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
         //System.out.println("name "+ ctx.id().getText() + "type STRING "+ "value "+ctx.str().getText());
 
     }
+
+
+    @Override public void enterExpr_prefix(LITTLEParser.Expr_prefixContext ctx) {
+        if(ctx.getChildCount()==3){
+
+            if(ctx.getChild(2).getChild(0).getText().equals("+")){
+                //create an addop node
+                ASTNode addop = new ASTNode();
+                addop.parent = AST;
+                AST.children.add(addop);
+                addop.operation = "+";
+                AST = addop;
+                System.out.println(ctx.getChild(2).getChild(0).getText());
+            }else if(ctx.getChild(2).getChild(0).getText().equals("-")){
+                //create an subop node
+                ASTNode subop = new ASTNode();
+                subop.parent = AST;
+                AST.children.add(subop);
+                subop.operation = "-";
+                AST = subop;
+                System.out.println(ctx.getChild(2).getChild(0).getText());
+            }
+
+        }
+
+    }
+
+    @Override public void exitExpr_prefix(LITTLEParser.Expr_prefixContext ctx) {
+        if(ctx.getChildCount()==3){
+            AST = AST.parent;
+        }
+
+    }
+
+
+
+    @Override public void enterFactor_prefix(LITTLEParser.Factor_prefixContext ctx) {
+        if(ctx.getChildCount()==3){
+
+            if(ctx.getChild(2).getChild(0).getText().equals("*")){
+                //create an mulop node
+                ASTNode mulop = new ASTNode();
+                mulop.parent = AST;
+                AST.children.add(mulop);
+                mulop.operation = "*";
+                AST = mulop;
+                System.out.println(ctx.getChild(2).getChild(0).getText());
+            }else if(ctx.getChild(2).getChild(0).getText().equals("/")){
+                //create an divop node
+                ASTNode divop = new ASTNode();
+                divop.parent = AST;
+                AST.children.add(divop);
+                divop.operation = "/";
+                AST = divop;
+                System.out.println(ctx.getChild(2).getChild(0).getText());
+            }
+
+        }
+    }
+
+    @Override public void exitFactor_prefix(LITTLEParser.Factor_prefixContext ctx) {
+        //move back to parent if we were in a non empty factor prefix
+        if(ctx.getChildCount()==3){
+            AST = AST.parent;
+        }
+    }
+
+    @Override public void enterPrimary(LITTLEParser.PrimaryContext ctx){
+        if(ctx.getChildCount()==1){
+            //create a primary node
+            String primaryValue = ctx.getText();
+            String type = "id";
+            //determine what the primary is
+
+
+
+            try {
+                Float.parseFloat(primaryValue);
+                type = "float";
+            }
+            catch(Exception e) {
+            }
+            try {
+                Integer.parseInt(primaryValue);
+                type = "integer";
+            }
+            catch(Exception e) {
+
+            }
+
+
+            if(type.equals("id")){
+                System.out.println(primaryValue);
+                System.out.println(type);
+                //create idNode
+                ASTNode idNode = new ASTNode();
+                idNode.parent = AST;
+                AST.children.add(idNode);
+                idNode.operation = type;
+                idNode.data = primaryValue;
+                AST = idNode;
+            }else if (type.equals("integer")){
+                System.out.println(primaryValue);
+                System.out.println(type);
+                //create integer literal node
+                ASTNode intNode = new ASTNode();
+                intNode.parent = AST;
+                AST.children.add(intNode);
+                intNode.operation = type;
+                intNode.data = primaryValue;
+                AST = intNode;
+            }else if (type.equals("float")){
+                System.out.println(primaryValue);
+                System.out.println(type);
+                //create float literal node
+                ASTNode floatNode = new ASTNode();
+                floatNode.parent = AST;
+                AST.children.add(floatNode);
+                floatNode.operation = type;
+                floatNode.data = primaryValue;
+                AST = floatNode;
+            }
+        }
+    }
+
+
+    @Override public void exitPrimary(LITTLEParser.PrimaryContext ctx) {
+        if(ctx.getChildCount()==1){
+            AST = AST.parent;
+        }
+    }
+
+
+
+
+    @Override public void enterAssign_expr(LITTLEParser.Assign_exprContext ctx) {
+        if(ctx.getChildCount()==3){
+
+
+            ASTNode assignNode = new ASTNode();
+            assignNode.parent = AST;
+            AST.children.add(assignNode);
+            assignNode.operation = "assign";
+
+            ASTNode idNode = new ASTNode();
+            idNode.parent = assignNode;
+            assignNode.children.add(idNode);
+            idNode.operation = "id";
+            idNode.data = ctx.getChild(0).getText();
+            AST = assignNode;
+        }
+
+    }
+
+    @Override public void exitAssign_expr(LITTLEParser.Assign_exprContext ctx) {
+        if(ctx.getChildCount()==3){
+            AST = AST.parent;
+        }
+    }
+
+
+    @Override public void enterRead_stmt(LITTLEParser.Read_stmtContext ctx) {
+        ASTNode readNode = new ASTNode();
+        readNode.parent = AST;
+        AST.children.add(readNode);
+        readNode.operation = "read";
+        readNode.data = ctx.getChild(2).getText();
+        AST = readNode;
+        System.out.println(ctx.getChild(2).getText());
+    }
+    @Override public void exitRead_stmt(LITTLEParser.Read_stmtContext ctx) {
+        AST = AST.parent;
+    }
+
+    @Override public void enterWrite_stmt(LITTLEParser.Write_stmtContext ctx) {
+        ASTNode writeNode = new ASTNode();
+        writeNode.parent = AST;
+        AST.children.add(writeNode);
+        writeNode.operation = "read";
+        writeNode.data = ctx.getChild(2).getText();
+        AST = writeNode;
+        System.out.println(ctx.getChild(2).getText());
+    }
+    @Override public void exitWrite_stmt(LITTLEParser.Write_stmtContext ctx) {
+        AST = AST.parent;
+    }
+
+
+
 
     public void addToSymbolTable(){
         symbolTable.add(scopeStack.pop());

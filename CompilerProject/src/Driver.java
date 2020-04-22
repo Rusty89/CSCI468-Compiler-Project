@@ -30,7 +30,6 @@ public class Driver {
                 ParseTreeWalker ptwalker = new ParseTreeWalker();
                 LITTLEListenerCustom listener = new LITTLEListenerCustom();
                 ptwalker.walk(listener, tree);
-
                 if(!listener.nameShared){
                     while(!listener.dummyTransferScopeStack.empty()){
                         ArrayList<ArrayList<String>> output = listener.dummyTransferScopeStack.pop();
