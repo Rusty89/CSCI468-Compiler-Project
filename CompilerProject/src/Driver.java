@@ -30,10 +30,10 @@ public class Driver {
                 ParseTreeWalker ptwalker = new ParseTreeWalker();
                 LITTLEListenerCustom listener = new LITTLEListenerCustom();
                 ptwalker.walk(listener, tree);
-                visitAST visit = new visitAST();
 
+                visitAST visit = new visitAST(listener.symbolTable);
                 visit.post_order_traversal(listener.AST);
-
+                System.out.println("hi");
                 if(!listener.nameShared){
                     while(!listener.dummyTransferScopeStack.empty()){
                         ArrayList<ArrayList<String>> output = listener.dummyTransferScopeStack.pop();

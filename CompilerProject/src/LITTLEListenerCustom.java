@@ -31,6 +31,7 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
     }
     @Override public void enterPgm_body(LITTLEParser.Pgm_bodyContext ctx) {
         //make global context symbol table
+
         currentSymbolSet = new ArrayList<>();
         currentSymbolSet.add(new ArrayList<>());
         currentSymbolSet.get(0).add("Symbol table GLOBAL");
@@ -59,8 +60,12 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
         dummyCurrentSymbolSet.get(0).add("Symbol table "+ctx.id().getText());
         dummyScopeStack.push(dummyCurrentSymbolSet);
 
+        //determine the symbol_table_level of this new node
+        String symbol_level = currentSymbolSet.get(0).get(0).split(" ")[2];
         //make ast node for function_decl
         ASTNode funcNode = new ASTNode();
+        //set symbol_table_level
+        funcNode.symbol_table_level = symbol_level;
         //make its parent the current node
         funcNode.parent = AST;
         //make this new node a child of the parent
@@ -68,7 +73,7 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
         //write what kind of thing this node does
         funcNode.operation = "function";
         //grabs name of function to make label with
-        funcNode.data = ctx.getChild(0).getText();
+        funcNode.data = ctx.getChild(2).getText();
         //update current node to the new one
         AST = funcNode;
     }
@@ -192,6 +197,7 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
         currentSymbol.add("value");
         currentSymbol.add(ctx.str().getText());
         checkForDuplicateName(ctx.id().getText());
+        scopeStack.peek().add(currentSymbol);
         dummyScopeStack.peek().add(currentSymbol);
 
     }
@@ -212,7 +218,10 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
 
     @Override public void enterExpr(LITTLEParser.ExprContext ctx) {
         //create placeholder node
+        String symbol_level = currentSymbolSet.get(0).get(0).split(" ")[2];
+
         ASTNode expressionNode = new ASTNode();
+        expressionNode.symbol_table_level = symbol_level;
         expressionNode.parent = AST;
         AST.children.add(expressionNode);
         expressionNode.operation = "expr";
@@ -223,7 +232,9 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
 
     @Override public void enterFactor(LITTLEParser.FactorContext ctx) {
         //create placeholder node
+        String symbol_level = currentSymbolSet.get(0).get(0).split(" ")[2];
         ASTNode factorNode = new ASTNode();
+        factorNode.symbol_table_level = symbol_level;
         factorNode.parent = AST;
         AST.children.add(factorNode);
         factorNode.operation = "fact";
@@ -298,7 +309,9 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
 
             if(ctx.getChild(2).getChild(0).getText().equals("+")){
                 //create an addop node
+                String symbol_level = currentSymbolSet.get(0).get(0).split(" ")[2];
                 ASTNode addop = new ASTNode();
+                addop.symbol_table_level = symbol_level;
                 addop.parent = AST;
                 AST.children.add(addop);
                 addop.operation = "+";
@@ -306,7 +319,9 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
 
             }else if(ctx.getChild(2).getChild(0).getText().equals("-")){
                 //create an subop node
+                String symbol_level = currentSymbolSet.get(0).get(0).split(" ")[2];
                 ASTNode subop = new ASTNode();
+                subop.symbol_table_level = symbol_level;
                 subop.parent = AST;
                 AST.children.add(subop);
                 subop.operation = "-";
@@ -333,7 +348,9 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
 
             if(ctx.getChild(2).getChild(0).getText().equals("*")){
                 //create an mulop node
+                String symbol_level = currentSymbolSet.get(0).get(0).split(" ")[2];
                 ASTNode mulop = new ASTNode();
+                mulop.symbol_table_level = symbol_level;
                 mulop.parent = AST;
                 AST.children.add(mulop);
                 mulop.operation = "*";
@@ -341,7 +358,9 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
 
             }else if(ctx.getChild(2).getChild(0).getText().equals("/")){
                 //create an divop node
+                String symbol_level = currentSymbolSet.get(0).get(0).split(" ")[2];
                 ASTNode divop = new ASTNode();
+                divop.symbol_table_level = symbol_level;
                 divop.parent = AST;
                 AST.children.add(divop);
                 divop.operation = "/";
@@ -387,7 +406,9 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
             if(type.equals("id")){
 
                 //create idNode
-                ASTNode idNode = new ASTNode();
+                String symbol_level = currentSymbolSet.get(0).get(0).split(" ")[2];
+                ASTNode idNode= new ASTNode();
+                idNode.symbol_table_level = symbol_level;
                 idNode.parent = AST;
                 AST.children.add(idNode);
                 idNode.operation = type;
@@ -396,7 +417,9 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
             }else if (type.equals("integer")){
 
                 //create integer literal node
+                String symbol_level = currentSymbolSet.get(0).get(0).split(" ")[2];
                 ASTNode intNode = new ASTNode();
+                intNode.symbol_table_level = symbol_level;
                 intNode.parent = AST;
                 AST.children.add(intNode);
                 intNode.operation = type;
@@ -405,7 +428,9 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
             }else if (type.equals("float")){
 
                 //create float literal node
+                String symbol_level = currentSymbolSet.get(0).get(0).split(" ")[2];
                 ASTNode floatNode = new ASTNode();
+                floatNode.symbol_table_level = symbol_level;
                 floatNode.parent = AST;
                 AST.children.add(floatNode);
                 floatNode.operation = type;
@@ -428,12 +453,15 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
     @Override public void enterAssign_expr(LITTLEParser.Assign_exprContext ctx) {
         if(ctx.getChildCount()==3){
 
+            String symbol_level = currentSymbolSet.get(0).get(0).split(" ")[2];
             ASTNode assignNode = new ASTNode();
+            assignNode.symbol_table_level = symbol_level;
             assignNode.parent = AST;
             AST.children.add(assignNode);
             assignNode.operation = "assign";
 
             ASTNode idNode = new ASTNode();
+            idNode.symbol_table_level = symbol_level;
             idNode.parent = assignNode;
             assignNode.children.add(idNode);
             idNode.operation = "id";
@@ -451,7 +479,9 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
 
 
     @Override public void enterRead_stmt(LITTLEParser.Read_stmtContext ctx) {
+        String symbol_level = currentSymbolSet.get(0).get(0).split(" ")[2];
         ASTNode readNode = new ASTNode();
+        readNode.symbol_table_level = symbol_level;
         readNode.parent = AST;
         AST.children.add(readNode);
         readNode.operation = "read";
@@ -464,7 +494,9 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
     }
 
     @Override public void enterWrite_stmt(LITTLEParser.Write_stmtContext ctx) {
+        String symbol_level = currentSymbolSet.get(0).get(0).split(" ")[2];
         ASTNode writeNode = new ASTNode();
+        writeNode.symbol_table_level = symbol_level;
         writeNode.parent = AST;
         AST.children.add(writeNode);
         writeNode.operation = "write";
