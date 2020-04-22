@@ -28,6 +28,12 @@ public class visitAST {
         else if (root.operation.equals("id")){
             id(root);
         }
+        else if (root.operation.equals("integer")){
+            intLit(root);
+        }
+        else if (root.operation.equals("float")){
+            floatLit(root);
+        }
         else if (root.operation.equals("+")){
             addop(root);
         }
@@ -114,26 +120,58 @@ public class visitAST {
 
     public void assign(ASTNode root){
         String name_of_var = root.children.get(0).data;
+        String type = find_variable_type(name_of_var, root.children.get(0).symbol_table_level);
 
+
+        if(type.equals("FLOAT")){
+            code.add("STOREF "+ root.children.get(1).temp_var + " "+name_of_var);
+        }
+        else if(type.equals("INT")){
+            code.add("STOREI "+ root.children.get(1).temp_var + " "+name_of_var);
+        }
 
     }
     public void function(ASTNode root){
 
     }
     public void id(ASTNode root){
+        root.temp_var = root.data;
+    }
+    public void intLit(ASTNode root){
+        root.temp_var = "T"+temp_counter;
+        temp_counter++;
+        code.add("STOREI "+ root.data + " "+root.temp_var);
+
+    }
+    public void floatLit(ASTNode root){
+        root.temp_var = "T"+temp_counter;
+        temp_counter++;
+        code.add("STOREF "+ root.data + " "+root.temp_var);
 
     }
     public void addop(ASTNode root){
+        root.temp_var = "T"+temp_counter;
+        temp_counter++;
 
+        code.add("ADDI "+ root.children.get(1).temp_var + " "+root.children.get(0).temp_var +" " +root.temp_var);
     }
     public void subop(ASTNode root){
+        root.temp_var = "T"+temp_counter;
+        temp_counter++;
 
+        code.add("SUBI "+ root.children.get(1).temp_var + " "+root.children.get(0).temp_var +" " +root.temp_var);
     }
     public void mulop(ASTNode root){
+        root.temp_var = "T"+temp_counter;
+        temp_counter++;
 
+        code.add("MULI "+ root.children.get(1).temp_var + " "+root.children.get(0).temp_var +" " +root.temp_var);
     }
     public void divop(ASTNode root){
+        root.temp_var = "T"+temp_counter;
+        temp_counter++;
 
+        code.add("DIVI "+ root.children.get(1).temp_var + " "+root.children.get(0).temp_var +" " +root.temp_var);
     }
 
 
