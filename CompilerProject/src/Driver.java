@@ -37,7 +37,17 @@ public class Driver {
                 IR_code_generation.post_order_traversal(listener.AST);
                 //print code
                 for (String line:IR_code_generation.code) {
-                    System.out.println(line);
+                    // TBD - save results to file?
+
+                    // print original line for reference
+                    System.out.println("ORIGINAL: " + line);
+
+                    // split on spaces and convert
+                    String[] temp = line.split(" ");
+                    ASTConverter.convert(temp);
+
+                    // formatting
+                    System.out.println();
                 }
 
 
