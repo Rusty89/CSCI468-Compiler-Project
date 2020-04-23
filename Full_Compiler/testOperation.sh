@@ -1,7 +1,5 @@
 INPUTS=inputs/* #  
 mkdir usertest # 
-g++ -o tiny tinyNew.c #
- 
 for i in $INPUTS # 
 	do # 
 		filename=${i%.*} # 
@@ -17,4 +15,3 @@ for i in $INPUTS #
 		diff -B -b -s usertest/$output2 usertest/$outtest_code #  
 	done # 
 rm -r usertest # 
-rm tiny
