@@ -10,14 +10,8 @@ public class visitAST {
     public visitAST(ArrayList<ArrayList<ArrayList<String>>> symbolTable){
 
         this.symbolTable = symbolTable;
-        //add initialize global variables
-        for (int i = 1; i <symbolTable.get(0).size() ; i++) {
-            if(symbolTable.get(0).get(i).get(3).equals("STRING")){
-                tiny_code.add("str "+ symbolTable.get(0).get(i).get(1)+" "+ symbolTable.get(0).get(i).get(5));
-            }else{
-                tiny_code.add("var "+ symbolTable.get(0).get(i).get(1));
-            }
-        }
+
+
 
     }
 
@@ -57,7 +51,12 @@ public class visitAST {
         }
         else if (root.operation.equals("/")){
             divop(root);
-        }else if (root.operation.equals("nop")){
+        }else if (root.operation.equals("varDec")){
+            varDec(root);
+        }else if (root.operation.equals("strDec")){
+            strDec(root);
+        }
+        else if (root.operation.equals("nop")){
             tiny_code.add("sys halt");
         }
 
@@ -238,6 +237,26 @@ public class visitAST {
             code.add("DIVF "+ root.children.get(1).temp_var + " "+root.children.get(0).temp_var +" " +root.temp_var);
             tiny_code.add("move "+root.children.get(1).temp_var +" "+root.temp_var);
             tiny_code.add("divr "+root.children.get(0).temp_var + " " +root.temp_var);
+        }
+
+    }
+    public void varDec(ASTNode root){
+        String [] read_variables = root.data.split(",");
+        for (String entry:read_variables ) {
+            String type = find_variable_type(entry, root.symbol_table_level);
+            code.add("DECL "+"VAR "+ entry);
+            tiny_code.add("var " + entry);
+
+        }
+
+    }
+    public void strDec(ASTNode root){
+        String [] read_variables = root.data.split(",");
+        for (String entry:read_variables ) {
+            String type = find_variable_type(entry, root.symbol_table_level);
+            code.add("DECL "+ "STRING "+ entry);
+            tiny_code.add("str " + entry);
+
         }
 
     }

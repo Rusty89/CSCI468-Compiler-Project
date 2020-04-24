@@ -166,7 +166,6 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
         }
     }
 
-    //variable declarations
 
     @Override public void enterVar_decl(LITTLEParser.Var_declContext ctx) {
         //add variables to symbol table
@@ -183,8 +182,20 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
             scopeStack.peek().add(currentSymbol);
             dummyScopeStack.peek().add(currentSymbol);
 
-
         }
+
+        String symbol_level = currentSymbolSet.get(0).get(0).split(" ")[2];
+        ASTNode varDec = new ASTNode();
+        varDec.symbol_table_level = symbol_level;
+        varDec.parent = AST;
+        AST.children.add(varDec);
+        varDec.operation = "varDec";
+        varDec.data = ctx.getChild(1).getText();
+        AST = varDec;
+    }
+
+    @Override public void exitVar_decl(LITTLEParser.Var_declContext ctx) {
+        AST = AST.parent;
     }
 
     @Override public void enterString_decl(LITTLEParser.String_declContext ctx) {
@@ -200,6 +211,20 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
         scopeStack.peek().add(currentSymbol);
         dummyScopeStack.peek().add(currentSymbol);
 
+
+        String symbol_level = currentSymbolSet.get(0).get(0).split(" ")[2];
+        ASTNode varDec = new ASTNode();
+        varDec.symbol_table_level = symbol_level;
+        varDec.parent = AST;
+        AST.children.add(varDec);
+        varDec.operation = "strDec";
+        varDec.data = ctx.getChild(1).getText() +" "+ctx.getChild(3).getText();
+        AST = varDec;
+
+    }
+
+    @Override public void exitString_decl(LITTLEParser.String_declContext ctx) {
+        AST = AST.parent;
     }
 
     @Override public void enterParam_decl(LITTLEParser.Param_declContext ctx) {
@@ -213,13 +238,24 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
         checkForDuplicateName(ctx.id().getText());
         dummyScopeStack.peek().add(currentSymbol);
 
+        String symbol_level = currentSymbolSet.get(0).get(0).split(" ")[2];
+        ASTNode varDec = new ASTNode();
+        varDec.symbol_table_level = symbol_level;
+        varDec.parent = AST;
+        AST.children.add(varDec);
+        varDec.operation = "varDec";
+        varDec.data = ctx.id().getText();
+        AST = varDec;
 
+    }
+
+    @Override public void exitParam_decl(LITTLEParser.Param_declContext ctx) {
+        AST = AST.parent;
     }
 
     @Override public void enterExpr(LITTLEParser.ExprContext ctx) {
         //create placeholder node
         String symbol_level = currentSymbolSet.get(0).get(0).split(" ")[2];
-
         ASTNode expressionNode = new ASTNode();
         expressionNode.symbol_table_level = symbol_level;
         expressionNode.parent = AST;
@@ -227,7 +263,6 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
         expressionNode.operation = "expr";
         AST = expressionNode;
     }
-
 
 
     @Override public void enterFactor(LITTLEParser.FactorContext ctx) {
@@ -242,15 +277,10 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
     }
 
 
-
     @Override public void exitExpr(LITTLEParser.ExprContext ctx) {
         //removing placeholder nodes and organizing the expression nodes
 
-
-
         ASTNode final_destination = AST.parent;
-
-
 
         while(AST.children.size()==2 ){
             AST.operation = AST.children.get(0).operation;
@@ -266,38 +296,26 @@ public class LITTLEListenerCustom extends LITTLEBaseListener {
             AST.parent = null;
         }
 
-
-
         AST = final_destination;
-
 
     }
 
     @Override public void exitFactor(LITTLEParser.FactorContext ctx) {
 
-
         ASTNode final_destination = AST.parent;
-
-
 
         while(AST.children.size()==2 ){
             AST.operation = AST.children.get(0).operation;
             AST.data = AST.children.get(0).data;
-            AST=AST.children.get(0);
-        }
+            AST=AST.children.get(0); }
 
         if(AST.children.size()==1){
-
             AST.parent.children.add( AST.children.get(0));
             AST.children.get(0).parent = AST.parent;
 
             AST.parent.children.remove(AST);
             AST.parent = null;
-
-
         }
-
-
 
         AST = final_destination;
 
